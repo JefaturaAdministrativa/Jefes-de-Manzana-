@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro Jefes de Manzana</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .card {
+      background: white;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Registro de Jefes de Manzana</h2>
+
+<input type="text" id="nombre" placeholder="Nombre completo">
+<input type="text" id="domicilio" placeholder="Domicilio">
+<input type="tel" id="telefono" placeholder="Teléfono">
+<input type="file" id="foto" accept="image/*">
+
+<button onclick="guardar()">Guardar</button>
+
+<h3>Jefes de Manzana Registrados</h3>
+<div id="lista"></div>
+
+<script>
+  let registros = [];
+
+  function guardar() {
+    const nombre = document.getElementById("nombre").value;
+    const domicilio = document.getElementById("domicilio").value;
+    const telefono = document.getElementById("telefono").value;
+    const fotoInput = document.getElementById("foto");
+
+    if (!nombre || !domicilio) {
+      alert("Nombre y domicilio son obligatorios");
+      return;
+    }
+
+    let fotoURL = "";
+    if (fotoInput.files.length > 0) {
+      fotoURL = URL.createObjectURL(fotoInput.files[0]);
+    }
+
+    const jefe = {
+      nombre,
+      domicilio,
+      telefono,
+      fotoURL
+    };
+
+    registros.push(jefe);
+    mostrar();
+    limpiar();
+  }
+
+  function mostrar() {
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    registros.forEach((j, index) => {
+      lista.innerHTML += `
+        <div class="card">
+          <strong>${j.nombre}</strong><br>
+          ${j.domicilio}<br>
+          Tel: ${j.telefono || "No registrado"}<br>
+          ${j.fotoURL ? `<img src="${j.fotoURL}" width="100">` : ""}
+        </div>
+      `;
+    });
+  }
+
+  function limpiar() {
+    document.getElementById("nombre").value = "";
+    document.getElementById("domicilio").value = "";
+    document.getElementById("telefono").value = "";
+    document.getElementById("foto").value = "";
+  }
+</script>
+
+</body>
+</html>
